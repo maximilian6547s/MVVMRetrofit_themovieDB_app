@@ -15,14 +15,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieRepositiry {
+public class MovieRepository {
 
     private ArrayList<Result> results = new ArrayList<>();
     private MutableLiveData<List<Result>> mutableLiveData = new MutableLiveData<>();
 
     private Application application;
 
-    public MovieRepositiry(Application application) {
+    public MovieRepository(Application application) {
         this.application = application;
     }
 
