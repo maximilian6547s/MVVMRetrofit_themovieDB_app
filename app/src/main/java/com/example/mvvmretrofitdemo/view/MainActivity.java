@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Result> results;
+//    private ArrayList<Result> results;
+    private PagedList<Result> results;
     private RecyclerView recyclerView;
     private ResultAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
@@ -60,10 +62,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPopularMovies() {
-        mainActivityViewModel.getAllMovieData().observe(this, new Observer<List<Result>>() {
+//        mainActivityViewModel.getAllMovieData().observe(this, new Observer<List<Result>>() {
+//            @Override
+//            public void onChanged(List<Result> resultsList) {
+//                results = (ArrayList<Result>) resultsList;
+//                fillRecyclerView();
+//            }
+//        });
+        mainActivityViewModel.getPagedListLiveData().observe(this, new Observer<PagedList<Result>>() {
             @Override
-            public void onChanged(List<Result> resultsList) {
-                results = (ArrayList<Result>) resultsList;
+            public void onChanged(PagedList<Result> resultList) {
+                results = resultList;
                 fillRecyclerView();
             }
         });
@@ -71,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillRecyclerView() {
         recyclerView = activityMainBinding.recyclerView;
-        adapter = new ResultAdapter(this, results);
+        adapter = new ResultAdapter(this);
+        adapter.submitList(results);
         int spanCount = 0;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             spanCount = 2;

@@ -9,10 +9,12 @@ import android.os.Parcelable;
 import android.os.Parcelable.Creator;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.recyclerview.widget.DiffUtil;
 
 import com.bumptech.glide.Glide;
 import com.example.mvvmretrofitdemo.R;
@@ -268,5 +270,17 @@ public class Result extends BaseObservable implements Parcelable {
         return 0;
     }
 
+    //need to compare items to find duplicates
+    public static final DiffUtil.ItemCallback<Result> CALLBACK = new DiffUtil.ItemCallback<Result>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Result oldItem, @NonNull Result newItem) {
+            return oldItem.id == newItem.id;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Result oldItem, @NonNull Result newItem) {
+            return true;
+        }
+    };
 }
 
